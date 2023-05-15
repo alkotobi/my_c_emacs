@@ -563,7 +563,10 @@
   :config
   (require 'dap-python))
 
-(global-auto-revert-mode t)
+(use-package goto-chg :ensure t)
+ (global-set-key (kbd "s-\[") 'goto-last-change)
+ (global-set-key (kbd "s-\]") 'goto-last-change-reverse)
+  (global-auto-revert-mode t)
 (use-package cmake-ide :ensure t)
 (cmake-ide-setup)
     (use-package flycheck

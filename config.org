@@ -609,6 +609,10 @@
 #+END_SRC
 * my config
 #+BEGIN_SRC emacs-lisp
+  (use-package iedit :ensure t)
+  (use-package goto-chg :ensure t)
+   (global-set-key (kbd "s-\[") 'goto-last-change)
+   (global-set-key (kbd "s-\]") 'goto-last-change-reverse)
     (global-auto-revert-mode t)
   (use-package cmake-ide :ensure t)
   (cmake-ide-setup)
@@ -654,7 +658,7 @@
           (setq-default dotspacemacs-configuration-layers
         '((python :variables python-sort-imports-on-save t)))
 
-  
+
       (use-package magit
         :custom
         (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -670,12 +674,12 @@
         :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 
-  
+
       (use-package rainbow-delimiters
         :hook (prog-mode . rainbow-delimiters-mode))
 
 
-  
+
       (use-package term
         :config
         (setq explicit-shell-file-name "bash") ;; Change this to zsh, etc
@@ -685,7 +689,7 @@
         (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
 
-  
+
       (use-package vterm
         :commands vterm
         :config
@@ -693,7 +697,7 @@
         ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
         (setq vterm-max-scrollback 10000))
 
-  
+
       (defun efs/configure-eshell ()
         ;; Save command history when commands are entered
         (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
@@ -724,7 +728,7 @@
         (eshell-git-prompt-use-theme 'powerline))
 
 
-    
+
       ;; Make ESC quit prompts
       (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 

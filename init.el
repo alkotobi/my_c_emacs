@@ -15,7 +15,7 @@
    '(("gnu" . "https://elpa.gnu.org/packages/")
      ("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(company-box cmake-ide package-install yasnippet-snippets nim-mode dired-hide-dotfiles dired-open all-the-icons-dired dired-single eshell-git-prompt vterm rainbow-delimiters evil-nerd-commenter forge counsel-projectile projectile python-mode anaconda-mode jedi-core pyvenv pyenv-mode counsel-world-clock neotree sr-speedbar cmake-mode magit exec-path-from-shell counsel-etags lsp-treemacs treemacs org-bullets company-lsp helm-lsp doom-modeline dashboard quickrun yasnippet company helm use-package async))
+   '(iedit company-box cmake-ide package-install yasnippet-snippets nim-mode dired-hide-dotfiles dired-open all-the-icons-dired dired-single eshell-git-prompt vterm rainbow-delimiters evil-nerd-commenter forge counsel-projectile projectile python-mode anaconda-mode jedi-core pyvenv pyenv-mode counsel-world-clock neotree sr-speedbar cmake-mode magit exec-path-from-shell counsel-etags lsp-treemacs treemacs org-bullets company-lsp helm-lsp doom-modeline dashboard quickrun yasnippet company helm use-package async))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
