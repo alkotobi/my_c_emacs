@@ -609,6 +609,9 @@
 #+END_SRC
 * my config
 #+BEGIN_SRC emacs-lisp
+(require 'openwith)
+(openwith-mode t)
+(setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
   (use-package iedit :ensure t)
   (use-package goto-chg :ensure t)
    (global-set-key (kbd "s-\[") 'goto-last-change)
@@ -801,3 +804,6 @@
       (add-hook 'nim-mode-hook 'my--init-nim-mode)
 
 #+END_SRC
+
+#+RESULTS:
+| my--init-nim-mode |

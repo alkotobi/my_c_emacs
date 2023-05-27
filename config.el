@@ -563,192 +563,196 @@
   :config
   (require 'dap-python))
 
-(use-package goto-chg :ensure t)
- (global-set-key (kbd "s-\[") 'goto-last-change)
- (global-set-key (kbd "s-\]") 'goto-last-change-reverse)
-  (global-auto-revert-mode t)
-(use-package cmake-ide :ensure t)
-(cmake-ide-setup)
-    (use-package flycheck
-      :ensure t
-      :init (global-flycheck-mode))
+(require 'openwith)
+(openwith-mode t)
+(setq openwith-associations '(("\\.pdf\\'" "evince" (file))))
+  (use-package iedit :ensure t)
+  (use-package goto-chg :ensure t)
+   (global-set-key (kbd "s-\[") 'goto-last-change)
+   (global-set-key (kbd "s-\]") 'goto-last-change-reverse)
+    (global-auto-revert-mode t)
+  (use-package cmake-ide :ensure t)
+  (cmake-ide-setup)
+      (use-package flycheck
+        :ensure t
+        :init (global-flycheck-mode))
 
 
 
 
 
-    (use-package pyvenv
-      :config
-      (pyvenv-mode 1))
+      (use-package pyvenv
+        :config
+        (pyvenv-mode 1))
 
 
 
 
 
-    (use-package projectile
-      :diminish projectile-mode
-      :config (projectile-mode)
-      :custom ((projectile-completion-system 'ivy))
-      :bind-keymap
-      ("C-c p" . projectile-command-map)
-      :init
-      ;; NOTE: Set this to the folder where you keep your Git repos!
-      (when (file-directory-p "~/Projects/Code")
-        (setq projectile-project-search-path '("~/Projects/Code")))
-      (setq projectile-switch-project-action #'projectile-dired))
+      (use-package projectile
+        :diminish projectile-mode
+        :config (projectile-mode)
+        :custom ((projectile-completion-system 'ivy))
+        :bind-keymap
+        ("C-c p" . projectile-command-map)
+        :init
+        ;; NOTE: Set this to the folder where you keep your Git repos!
+        (when (file-directory-p "~/Projects/Code")
+          (setq projectile-project-search-path '("~/Projects/Code")))
+        (setq projectile-switch-project-action #'projectile-dired))
 
-    (use-package counsel-projectile
-      :config (counsel-projectile-mode))
+      (use-package counsel-projectile
+        :config (counsel-projectile-mode))
 
-    (setq-default dotspacemacs-configuration-layers '(
-      (python :variables python-formatter 'yapf)))
       (setq-default dotspacemacs-configuration-layers '(
-      (python :variables python-format-on-save t)))
-      (setq-default dotspacemacs-configuration-layers '(
-      (python :variables python-save-before-test nil)))
-      (setq-default dotspacemacs-configuration-layers '(
-        (python :variables python-fill-column 99)))
-        (setq-default dotspacemacs-configuration-layers
-      '((python :variables python-sort-imports-on-save t)))
+        (python :variables python-formatter 'yapf)))
+        (setq-default dotspacemacs-configuration-layers '(
+        (python :variables python-format-on-save t)))
+        (setq-default dotspacemacs-configuration-layers '(
+        (python :variables python-save-before-test nil)))
+        (setq-default dotspacemacs-configuration-layers '(
+          (python :variables python-fill-column 99)))
+          (setq-default dotspacemacs-configuration-layers
+        '((python :variables python-sort-imports-on-save t)))
 
 
-    (use-package magit
-      :custom
-      (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+      (use-package magit
+        :custom
+        (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-    ;; NOTE: Make sure to configure a GitHub token before using this package!
-    ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-    ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
-    ;(use-package forge)
-
-
-
-    (use-package evil-nerd-commenter
-      :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+      ;; NOTE: Make sure to configure a GitHub token before using this package!
+      ;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
+      ;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
+      ;(use-package forge)
 
 
 
-    (use-package rainbow-delimiters
-      :hook (prog-mode . rainbow-delimiters-mode))
+      (use-package evil-nerd-commenter
+        :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 
 
 
-    (use-package term
-      :config
-      (setq explicit-shell-file-name "bash") ;; Change this to zsh, etc
-      ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
-
-      ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
-      (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
+      (use-package rainbow-delimiters
+        :hook (prog-mode . rainbow-delimiters-mode))
 
 
 
-    (use-package vterm
-      :commands vterm
-      :config
-      (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
-      ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
-      (setq vterm-max-scrollback 10000))
+      (use-package term
+        :config
+        (setq explicit-shell-file-name "bash") ;; Change this to zsh, etc
+        ;;(setq explicit-zsh-args '())         ;; Use 'explicit-<shell>-args for shell-specific args
 
-
-    (defun efs/configure-eshell ()
-      ;; Save command history when commands are entered
-      (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
-
-      ;; Truncate buffer for performance
-      (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
-
-      ;; Bind some useful keys for evil-mode
-      (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
-      (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
-      (evil-normalize-keymaps)
-
-      (setq eshell-history-size         10000
-            eshell-buffer-maximum-lines 10000
-            eshell-hist-ignoredups t
-            eshell-scroll-to-bottom-on-input t))
-
-    (use-package eshell-git-prompt)
-
-    (use-package eshell
-      :hook (eshell-first-time-mode . efs/configure-eshell)
-      :config
-
-      (with-eval-after-load 'esh-opt
-        (setq eshell-destroy-buffer-when-process-dies t)
-        (setq eshell-visual-commands '("htop" "zsh" "vim")))
-
-      (eshell-git-prompt-use-theme 'powerline))
+        ;; Match the default Bash shell prompt.  Update this if you have a custom prompt
+        (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *"))
 
 
 
-    ;; Make ESC quit prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+      (use-package vterm
+        :commands vterm
+        :config
+        (setq term-prompt-regexp "^[^#$%>\n]*[#$%>] *")  ;; Set this to match your custom shell prompt
+        ;;(setq vterm-shell "zsh")                       ;; Set this to customize the shell to launch
+        (setq vterm-max-scrollback 10000))
 
-    (use-package general
-      :config
-      (general-create-definer rune/leader-keys
-        :keymaps '(normal insert visual emacs)
-        :prefix "SPC"
-        :global-prefix "C-SPC")
 
-      (rune/leader-keys
-        "t"  '(:ignore t :which-key "toggles")
-        "tt" '(counsel-load-theme :which-key "choose theme")))
+      (defun efs/configure-eshell ()
+        ;; Save command history when commands are entered
+        (add-hook 'eshell-pre-command-hook 'eshell-save-some-history)
 
-    (use-package evil
-      :init
-      (setq evil-want-integration t)
-      (setq evil-want-keybinding nil)
-      (setq evil-want-C-u-scroll t)
-      (setq evil-want-C-i-jump nil)
-      :config
-      (evil-mode 1)
-      (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-      (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+        ;; Truncate buffer for performance
+        (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
 
-      ;; Use visual line motions even outside of visual-line-mode buffers
-      (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-      (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+        ;; Bind some useful keys for evil-mode
+        (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
+        (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+        (evil-normalize-keymaps)
 
-      (evil-set-initial-state 'messages-buffer-mode 'normal)
-      (evil-set-initial-state 'dashboard-mode 'normal))
+        (setq eshell-history-size         10000
+              eshell-buffer-maximum-lines 10000
+              eshell-hist-ignoredups t
+              eshell-scroll-to-bottom-on-input t))
 
-    (use-package evil-collection
-      :after evil
-      :config
-      (evil-collection-init))
-    (add-hook 'python-mode-hook 'anaconda-mode)
+      (use-package eshell-git-prompt)
 
-    (use-package nim-mode :ensure t)
-    ;; The `nimsuggest-path' will be set to the value of
-    ;; (executable-find "nimsuggest"), automatically.
-    (setq nimsuggest-path "/usr/local/bin/nimsuggest")
+      (use-package eshell
+        :hook (eshell-first-time-mode . efs/configure-eshell)
+        :config
 
-    (defun my--init-nim-mode ()
-      "Local init function for `nim-mode'."
+        (with-eval-after-load 'esh-opt
+          (setq eshell-destroy-buffer-when-process-dies t)
+          (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
-      ;; Just an example, by default these functions are
-      ;; already mapped to "C-c <" and "C-c >".
-      (local-set-key (kbd "M->") 'nim-indent-shift-right)
-      (local-set-key (kbd "M-<") 'nim-indent-shift-left)
+        (eshell-git-prompt-use-theme 'powerline))
 
-      ;; Make files in the nimble folder read only by default.
-      ;; This can prevent to edit them by accident.
-      (when (string-match "/\.nimble/" (or (buffer-file-name) "")) (read-only-mode 1))
 
-      ;; If you want to experiment, you can enable the following modes by
-      ;; uncommenting their line.
-      (nimsuggest-mode 1)
-      ;; Remember: Only enable either `flycheck-mode' or `flymake-mode' at the same time.
-      (flycheck-mode 1)
-      ;; (flymake-mode 1)
 
-      ;; The following modes are disabled for Nim files just for the case
-      ;; that they are enabled globally.
-      ;; Anything that is based on smie can cause problems.
-      (auto-fill-mode 0)
-      (electric-indent-local-mode 0)
-    )
+      ;; Make ESC quit prompts
+      (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-    (add-hook 'nim-mode-hook 'my--init-nim-mode)
+      (use-package general
+        :config
+        (general-create-definer rune/leader-keys
+          :keymaps '(normal insert visual emacs)
+          :prefix "SPC"
+          :global-prefix "C-SPC")
+
+        (rune/leader-keys
+          "t"  '(:ignore t :which-key "toggles")
+          "tt" '(counsel-load-theme :which-key "choose theme")))
+
+      (use-package evil
+        :init
+        (setq evil-want-integration t)
+        (setq evil-want-keybinding nil)
+        (setq evil-want-C-u-scroll t)
+        (setq evil-want-C-i-jump nil)
+        :config
+        (evil-mode 1)
+        (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+        (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+        ;; Use visual line motions even outside of visual-line-mode buffers
+        (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+        (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+        (evil-set-initial-state 'messages-buffer-mode 'normal)
+        (evil-set-initial-state 'dashboard-mode 'normal))
+
+      (use-package evil-collection
+        :after evil
+        :config
+        (evil-collection-init))
+      (add-hook 'python-mode-hook 'anaconda-mode)
+
+      (use-package nim-mode :ensure t)
+      ;; The `nimsuggest-path' will be set to the value of
+      ;; (executable-find "nimsuggest"), automatically.
+      (setq nimsuggest-path "/usr/local/bin/nimsuggest")
+
+      (defun my--init-nim-mode ()
+        "Local init function for `nim-mode'."
+
+        ;; Just an example, by default these functions are
+        ;; already mapped to "C-c <" and "C-c >".
+        (local-set-key (kbd "M->") 'nim-indent-shift-right)
+        (local-set-key (kbd "M-<") 'nim-indent-shift-left)
+
+        ;; Make files in the nimble folder read only by default.
+        ;; This can prevent to edit them by accident.
+        (when (string-match "/\.nimble/" (or (buffer-file-name) "")) (read-only-mode 1))
+
+        ;; If you want to experiment, you can enable the following modes by
+        ;; uncommenting their line.
+        (nimsuggest-mode 1)
+        ;; Remember: Only enable either `flycheck-mode' or `flymake-mode' at the same time.
+        (flycheck-mode 1)
+        ;; (flymake-mode 1)
+
+        ;; The following modes are disabled for Nim files just for the case
+        ;; that they are enabled globally.
+        ;; Anything that is based on smie can cause problems.
+        (auto-fill-mode 0)
+        (electric-indent-local-mode 0)
+      )
+
+      (add-hook 'nim-mode-hook 'my--init-nim-mode)
